@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
 
   Compressor airCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
 
-  //private final Timer m_timer = new Timer();
+  private final Timer m_timer = new Timer();
 
   @Override
   public void robotInit() {
@@ -60,10 +60,20 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousInit() {}
+  public void autonomousInit() {
+    m_timer.reset();
+    m_timer.start();
+  }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    // Drive for 2 seconds
+    if (m_timer.get() < 2) {
+      robotDrive.tankDrive(-0.5, 0.5); // drive forwards half speed
+    } else {
+      robotDrive.stopMotor(); // stop robot
+    }
+  }
 
   @Override
   public void teleopInit() {}
@@ -78,6 +88,7 @@ public class Robot extends TimedRobot {
   
     robotDrive.tankDrive(-jDriverIntaker.getRawAxis(1), -jDriverIntaker.getRawAxis(5));
 
+    
     //dt_rearRight.set(ControlMode.PercentOutput, jDriverIntaker.getRawAxis(5));
     //left_motor.set(ControlMode.PercentOutput, jDriverIntaker.getRawAxis(1));
 
@@ -127,8 +138,8 @@ public class Robot extends TimedRobot {
     /* Activate shooter motors and doors*/
     if(jDriverShooter.getRawButtonPressed(3) == true){
       door.set(DoubleSolenoid.Value.kForward);
-      ShooterA.set(ControlMode.PercentOutput, 0.61);
-      ShooterB.set(ControlMode.PercentOutput, 0.61);
+      ShooterA.set(ControlMode.PercentOutput, 0.65);
+      ShooterB.set(ControlMode.PercentOutput, 0.68);
     }
     // Yellow Button (Y)
     /* Activate shooter motors and doors */
